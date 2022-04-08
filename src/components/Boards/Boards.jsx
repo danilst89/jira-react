@@ -1,24 +1,22 @@
 import React from 'react';
 import BoardItem from '../BoardItem/BoardItem';
+import { GlobalContextConsumer } from '../GlobalContext';
 
 export default class Boards extends React.Component {
   render() {
-    const { boardStatuses, tasks, onDrop, onDragStart } = this.props;
-
     return(
       <ul className='board'>
-        {Object.values(boardStatuses).map(boardStatus => {
-          return (
-            <BoardItem
-              onDragStart={ onDragStart }
-              onDrop={ onDrop }
-              boardStatuses={boardStatuses}
-              key={boardStatus}
-              boardStatus={boardStatus}
-              tasks={tasks}
-            />
-          )
-        })}
+        <GlobalContextConsumer>
+          {context => 
+            Object.values(context.boardStatuses).map(boardStatus => {
+            return (
+              <BoardItem
+                key={ boardStatus }
+                boardStatus={ boardStatus }
+              />
+            )
+          })}
+        </GlobalContextConsumer>
       </ul>
     )
   }
