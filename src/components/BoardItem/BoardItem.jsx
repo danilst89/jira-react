@@ -1,11 +1,11 @@
-import React from "react";
-import Card from "../Card/Card";
-import { GlobalContextConsumer } from "../GlobalContext";
+import React from 'react';
+import Card from '../Card';
+import { GlobalContextConsumer } from '../GlobalContext';
 
 export default class BoardItem extends React.Component {
-  onDragOver = (e) => {
+  onDragOver = e => {
     e.preventDefault();
-  }
+  };
 
   render() {
     const { boardStatus } = this.props;
@@ -14,7 +14,7 @@ export default class BoardItem extends React.Component {
       <GlobalContextConsumer>
         {
           context => <li
-            onDragOver={this.onDragOver}
+            onDragOver={ this.onDragOver }
             className='board__item'
             onDrop={e => context.onDrop(e, boardStatus)}
           >
@@ -25,12 +25,12 @@ export default class BoardItem extends React.Component {
                   <div key={ task.id }>
                     <Card task={ task }></Card>
                   </div>
-                )
+                );
               }
             })}
           </li>
         }
       </GlobalContextConsumer>
-    )
+    );
   }
 }

@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+
 const { Provider, Consumer } = React.createContext();
 
 const tasks = [
@@ -10,14 +11,22 @@ const tasks = [
   {
     id: 2,
     title: 'Task 2',
-    status: 'done'
+    status: 'done',
   },
   {
     id: 3,
     title: 'Task 3',
-    status: 'backlog'
-  }
-]
+    status: 'backlog',
+  },
+];
+
+const boardStatuses = {
+  'backlog': 'Backlog',
+  'in-progress': 'In Progress',
+  'blocked': 'Blocked',
+  'ready-for-qa': 'Ready for QA',
+  'done': 'Done',
+};
 
 class GlobalContextProvider extends React.Component {
   constructor() {
@@ -25,37 +34,33 @@ class GlobalContextProvider extends React.Component {
     this.state = {
       selectItem: '',
       tasks,
-      boardStatuses: {
-        'backlog': 'Backlog',
-        'in-progress': 'In Progress',
-        'blocked': 'Blocked',
-        'ready-for-qa': 'Ready for QA',
-        'done': 'Done'
-      }
-    }
+      boardStatuses,
+    };
   }
 
   onDragStart = (e, title) => {
     this.setState({
-      selectItem: title
-    })
-  }
+      selectItem: title,
+    });
+  };
 
   onDrop = (e, boardStatus) => {
-    const tasks = this.state.tasks.filter(task => {
+    const { tasks, selectItem } = this.state;
+
+    const filteredTasks = tasks.filter(task => {
       const parsedValue = boardStatus.replace(/\s+/g, '-').toLowerCase();
 
-      if (task.title === this.state.selectItem) {
+      if (task.title === selectItem) {
         task.status = parsedValue;
       }
 
       return task;
-    })
+    });
 
     this.setState({
-      tasks
-    })
-  }
+      filteredTasks,
+    });
+  };
 
   render() {
     const { tasks, selectItem, boardStatuses } = this.state;
@@ -67,11 +72,12 @@ class GlobalContextProvider extends React.Component {
         onDrop,
         tasks,
         selectItem,
-        boardStatuses
-      }}>
+        boardStatuses,
+      }}
+      >
         {this.props.children}
       </Provider>
-    )
+    );
   }
 }
 
