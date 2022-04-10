@@ -38,9 +38,9 @@ class GlobalContextProvider extends React.Component {
     };
   }
 
-  onDragStart = (e, title) => {
+  onDragStart = (e, id) => {
     this.setState({
-      selectItem: title,
+      selectItem: id,
     });
   };
 
@@ -50,7 +50,7 @@ class GlobalContextProvider extends React.Component {
     const filteredTasks = tasks.filter(task => {
       const parsedValue = boardStatus.replace(/\s+/g, '-').toLowerCase();
 
-      if (task.title === selectItem) {
+      if (task.id === selectItem) {
         task.status = parsedValue;
       }
 
@@ -62,9 +62,27 @@ class GlobalContextProvider extends React.Component {
     });
   };
 
+  addTask = title => {
+    const { tasks } = this.state;
+
+    if (!title) {
+      return;
+    }
+
+    const newTask = {
+      id: Math.floor(Math.random() * 10000000),
+      title,
+      status: 'backlog',
+    };
+
+    this.setState({
+      tasks: [...tasks, newTask],
+    });
+  };
+
   render() {
     const { tasks, selectItem, boardStatuses } = this.state;
-    const { onDragStart, onDrop } = this;
+    const { onDragStart, onDrop, addTask } = this;
 
     return (
       <Provider value={{
@@ -73,6 +91,7 @@ class GlobalContextProvider extends React.Component {
         tasks,
         selectItem,
         boardStatuses,
+        addTask
       }}
       >
         {this.props.children}

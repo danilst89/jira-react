@@ -9,7 +9,7 @@ export default class Card extends React.Component {
       <GlobalContextConsumer>
         {
           context =>
-            <div draggable onDragStart={e => context.onDragStart(e, task.title)} className="board__item-card">
+            <div draggable onDragStart={e => context.onDragStart(e, task.id)} className="board__item-card">
               <h5 className="card__title">{ task.title }</h5>
             </div>
         }
